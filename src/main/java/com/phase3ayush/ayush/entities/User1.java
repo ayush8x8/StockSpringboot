@@ -19,15 +19,14 @@ public class User1 {
 	private Boolean confirmed;
 	private Boolean admin;
 	private String mobilenumber;
-//	private String Role;
+	private String role;
 
-//	public String getRole() {
-//		return Role;
-//	}
-//
-//	public void setRoles(String roles) {
-//		Role = roles;
-//	}
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
+	}
 
 	public long getId() {
 		return id;

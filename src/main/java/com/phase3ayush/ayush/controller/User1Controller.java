@@ -89,6 +89,7 @@ public class User1Controller {
 
 	}
 	
+	
 
 	public void sendemail(Long userid) throws AddressException, MessagingException {
 
