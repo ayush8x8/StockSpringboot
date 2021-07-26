@@ -21,8 +21,9 @@ import com.phase3ayush.ayush.entities.Company;
 import com.phase3ayush.ayush.entities.Companystockexchangemap;
 import com.phase3ayush.ayush.entities.Stockexchange;
 
-@CrossOrigin(origins="http://localhost:3000")
+
 @RestController
+@CrossOrigin
 public class StockexchangeController {
 
 	@Autowired

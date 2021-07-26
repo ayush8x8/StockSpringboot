@@ -67,14 +67,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-@CrossOrigin(origins="http://localhost:3000")
+
 @RestController
+@CrossOrigin
 public class User1Controller {
 
 	@Autowired
 	User1Repository userRepo;
 
-	@CrossOrigin(origins = "http://localhost:3000")
+//	@CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping(value = "/setuserapi", method = RequestMethod.POST)
 
 	public String Stringreactuserapi(@RequestBody User1 user) throws AddressException, MessagingException {
@@ -87,6 +88,7 @@ public class User1Controller {
 		return user.toString();
 
 	}
+	
 
 	public void sendemail(Long userid) throws AddressException, MessagingException {
 

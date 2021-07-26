@@ -22,8 +22,9 @@ import com.phase3ayush.ayush.dao.SectorRepository;
 import com.phase3ayush.ayush.entities.Company;
 import com.phase3ayush.ayush.entities.Sector;
 
-@CrossOrigin(origins="http://localhost:3000")
+
 @RestController
+@CrossOrigin
 public class CompanyController {
 	
 	
