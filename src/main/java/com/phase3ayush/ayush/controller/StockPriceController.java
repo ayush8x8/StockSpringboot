@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +21,7 @@ import com.phase3ayush.ayush.dao.StockPriceRepository;
 import com.phase3ayush.ayush.entities.Company;
 import com.phase3ayush.ayush.entities.StockPrice;
 
+@CrossOrigin(origins="http://localhost:3000")
 @RestController
 public class StockPriceController {
 	
@@ -38,15 +40,21 @@ public class StockPriceController {
 		stockpriceRepo.save(stockprice);
 		return 9;
 	}
+	
+	@GetMapping("/getStockPrices")
+	public List<StockPrice> getStockPrices(){
+		return stockpriceRepo.findAll();
+	}
+	
 //	ToDO : get sp from cid
 	@GetMapping("/getStockPriceFromCompanyName")
-	public List<Float> getStockPriceFromCompanyName(@RequestParam String companyName) {
+	public List<StockPrice> getStockPriceFromCompanyName(@RequestParam String companyName) {
 		
 		Company company = companyRepo.findByCompanyName(companyName);
 		return stockpriceRepo.getStockPriceFromCID(company.getId());
 	}
 	
-	@GetMapping("/getCompanyStockPriceInRange")
+	@PostMapping("/getCompanyStockPriceInRange")
 	public List<Float> getCompanyStockPriceInRange(@RequestBody Map<String, String> details) throws ParseException {
 		
 		Company company = companyRepo.findByCompanyName(details.get("companyName"));

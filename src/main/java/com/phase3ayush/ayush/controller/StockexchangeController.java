@@ -85,7 +85,6 @@ public class StockexchangeController {
 		companystockexchangemap.setStockexchange(stockExchange);
 		String companyCode = company_name+exchange_name+company.getId();
 		companystockexchangemap.setCompanyCode(companyCode);
-		
 		companystockexRepo.save(companystockexchangemap);
 
 		return 5;

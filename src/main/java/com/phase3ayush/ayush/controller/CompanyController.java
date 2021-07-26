@@ -41,6 +41,7 @@ public class CompanyController {
 		return 1;
 	}
 	
+	
 	@GetMapping("/getCompanies")
 	public List<Company> getCompanyDetails() {
 		List<Company> companies = new ArrayList<Company>();
@@ -49,7 +50,7 @@ public class CompanyController {
 	}
 	
 	@GetMapping("/getMatchingCompanies")
-	public List<String> getMatchingCompanies(@RequestParam String companyName) {
+	public List<Company> getMatchingCompanies(@RequestParam String companyName) {
 //		List<Company> companies = new ArrayList<Company>();
 		return companyRepo.searchByTitleLike(companyName);
 	}
@@ -67,6 +68,7 @@ public class CompanyController {
 	
 	@PutMapping("/updateCompany")
 	public int updateCompanyDetails(@RequestBody Company company) {
+		company.setSector(sectorRepo.findBySectorName(company.getSectorName()));
 		companyRepo.save(company);
 		return 2;
 	}

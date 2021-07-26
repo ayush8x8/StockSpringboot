@@ -174,6 +174,7 @@ public class User1Controller {
 		}
 	}
 	
+	
 	@GetMapping("/getUserByName")
 	public User1 getUserDetailsByName(@RequestParam String userName) {
 		return userRepo.findByName(userName);

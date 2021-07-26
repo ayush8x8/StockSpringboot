@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +20,7 @@ import com.phase3ayush.ayush.dao.StockPriceRepository;
 import com.phase3ayush.ayush.entities.Company;
 import com.phase3ayush.ayush.entities.Sector;
 
+@CrossOrigin(origins="http://localhost:3000")
 @RestController
 public class SectorController {
 	
@@ -51,7 +53,7 @@ public class SectorController {
 		
 	}
 	
-	@GetMapping("/getSectorPriceInRange")
+	@PostMapping("/getSectorPriceInRange")
 	public Float getSectorPriceInRange(@RequestBody Map<String, String> details) throws ParseException {
 		Sector sector = sectorRepo.findBySectorName(details.get("sectorName"));
 		Date start = new SimpleDateFormat("yyyy-MM-dd").parse(details.get("start"));

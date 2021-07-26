@@ -14,8 +14,8 @@ import com.phase3ayush.ayush.entities.Company;
 public interface CompanyRepository extends JpaRepository<Company, Long>{
 	public Company findByCompanyName(String companyName);
 	
-	@Query("select companyName from Company where companyName like %:companyName%")
-	List<String> searchByTitleLike(@Param("companyName") String companyName);
+	@Query("select c from Company c where companyName like %:companyName%")
+	List<Company> searchByTitleLike(@Param("companyName") String companyName);
 	
 //	@Query("select companyName from Company where id in (select company_id from Companystockexchangemap where companyCode like %:companyCode%)")
 //	List<String> searchByCodeLike(@Param("companyCode") String companyCode);
