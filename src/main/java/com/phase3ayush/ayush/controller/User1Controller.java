@@ -105,7 +105,7 @@ public class User1Controller {
 	public void sendemail(Long userid) throws AddressException, MessagingException, IOException {
 
 		User1 user = userRepo.getById(userid);
-		Email from = new Email("ayushtb7@gmail.com");
+		Email from = new Email("gpathak161999@gmail.com");
 	    String subject = "Sending with SendGrid is Fun";
 	    Email to = new Email(user.getEmail());
 	    Content content = new Content("text/html", "<h1><a href =\"https://ayushstockmarketspring.herokuapp.com/confirmuser/" + userid + "/\"> Click to confirm </a></h1>");
