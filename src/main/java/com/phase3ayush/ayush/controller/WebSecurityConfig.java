@@ -64,6 +64,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				//for permit all no need to add extra slash in the end
 				//when invoking endpint
 				.antMatchers("/authenticate").permitAll().
+				antMatchers("/confirmuser/").permitAll().
+				antMatchers("/confirmuser/*/").permitAll().
 				antMatchers("/settestuser").permitAll().
 				antMatchers("/setuserapi").permitAll().
 				antMatchers("/addUser1").permitAll().
@@ -74,6 +76,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				antMatchers("/h2-console/**").permitAll().
 				antMatchers("/h2-console/***").permitAll().
 				antMatchers("/h2-console/*").permitAll().
+//				antMatchers("/**").permitAll().
 				//this can affect cors sometimes so use authority and note role
 					 antMatchers("/getuserapi").hasRole("admin").
 					// you will have to specify /getuserapi/ as endpoint in calling app like react or postamannot/getuser api

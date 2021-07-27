@@ -61,6 +61,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.phase3ayush.ayush.dao.User1Repository;
 import com.phase3ayush.ayush.entities.Company;
 import com.phase3ayush.ayush.entities.User1;
+import com.sendgrid.Method;
+import com.sendgrid.Request;
+import com.sendgrid.Response;
+import com.sendgrid.SendGrid;
+import com.sendgrid.helpers.mail.Mail;
+import com.sendgrid.helpers.mail.objects.Content;
+import com.sendgrid.helpers.mail.objects.Email;
 
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -74,64 +81,89 @@ public class User1Controller {
 
 	@Autowired
 	User1Repository userRepo;
+	
+	@Autowired
+	private JwtUserDetailsService userDetailsService;
 
 //	@CrossOrigin(origins = "http://localhost:3000")
 	@RequestMapping(value = "/setuserapi", method = RequestMethod.POST)
 
-	public String Stringreactuserapi(@RequestBody User1 user) throws AddressException, MessagingException {
-
-		User1 usrsaved = userRepo.save(user);
+	public String Stringreactuserapi(@RequestBody User1 user) throws AddressException, MessagingException, IOException {
+		
+		User1 user1= userDetailsService.save(user);
+//		User1 usrsaved = userRepo.save(user);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Responded", "UserController");
 		headers.add("Access-Control-Allow-Origin", "*");
-		sendemail(user.getId());
+		sendemail(user1.getId());
 		return user.toString();
 
 	}
 	
 	
 
-	public void sendemail(Long userid) throws AddressException, MessagingException {
+	public void sendemail(Long userid) throws AddressException, MessagingException, IOException {
 
 		User1 user = userRepo.getById(userid);
+		Email from = new Email("ayushtb7@gmail.com");
+	    String subject = "Sending with SendGrid is Fun";
+	    Email to = new Email(user.getEmail());
+	    Content content = new Content("text/html", "<h1><a href =\"https://ayushstockmarketspring.herokuapp.com/confirmuser/" + userid + "/\"> Click to confirm </a></h1>");
+	    Mail mail = new Mail(from, subject, to, content);
 
-		final String username = "ayushtb7@gmail.com";
-		final String password = "springboot7A#";
-
-		Properties prop = new Properties();
-		prop.put("mail.smtp.host", "smtp.gmail.com");
-		prop.put("mail.smtp.port", "587");
-		prop.put("mail.smtp.auth", "true");
-		prop.put("mail.smtp.starttls.enable", "true"); // TLS
-
-		Session session = Session.getInstance(prop, new javax.mail.Authenticator() {
-			protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
-				return new javax.mail.PasswordAuthentication(username, password);
-			}
-		});
-
-		try {
-
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("sftrainerram@gmail.com"));
-			// message.setRecipients(
-			// Message.RecipientType.TO,
-			// InternetAddress.parse("sftrainerram@gmail.com")
-			// );
-			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getEmail()));
-			message.setSubject("USer confirmation email");
-			// message.setText("Dear Mail Crawler,"
-			// + "\n\n Please do not spam my email!");
-			message.setContent(
-					"<h1><a href =\"http://127.0.0.1:8084/confirmuser/" + userid + "/\"> Click to confirm </a></h1>",
-					"text/html");
-			Transport.send(message);
-
-			System.out.println("Done");
-
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		}
+	    SendGrid sg = new SendGrid(System.getenv("SD_KEY"));
+	    Request request = new Request();
+	    try {
+	      request.setMethod(Method.POST);
+	      request.setEndpoint("mail/send");
+	      request.setBody(mail.build());
+	      Response response = sg.api(request);
+	      System.out.println(response.getStatusCode());
+	      System.out.println(response.getBody());
+	      System.out.println(response.getHeaders());
+	    } catch (Exception ex) {
+	      throw ex;
+	    }
+		
+//		User1 user = userRepo.getById(userid);
+//
+//		final String username = "ayushtb7@gmail.com";
+//		final String password = "springboot7A#";
+//
+//		Properties prop = new Properties();
+//		prop.put("mail.smtp.host", "smtp.gmail.com");
+//		prop.put("mail.smtp.port", "587");
+//		prop.put("mail.smtp.auth", "true");
+//		prop.put("mail.smtp.starttls.enable", "true"); // TLS
+//
+//		Session session = Session.getInstance(prop, new javax.mail.Authenticator() {
+//			protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
+//				return new javax.mail.PasswordAuthentication(username, password);
+//			}
+//		});
+//
+//		try {
+//
+//			Message message = new MimeMessage(session);
+//			message.setFrom(new InternetAddress("sftrainerram@gmail.com"));
+//			// message.setRecipients(
+//			// Message.RecipientType.TO,
+//			// InternetAddress.parse("sftrainerram@gmail.com")
+//			// );
+//			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getEmail()));
+//			message.setSubject("USer confirmation email");
+//			// message.setText("Dear Mail Crawler,"
+//			// + "\n\n Please do not spam my email!");
+//			message.setContent(
+//					"<h1><a href =\"http://127.0.0.1:8084/confirmuser/" + userid + "/\"> Click to confirm </a></h1>",
+//					"text/html");
+//			Transport.send(message);
+//
+//			System.out.println("Done");
+//
+//		} catch (MessagingException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	@RequestMapping(value = "/confirmuser/{userid}", method = RequestMethod.GET)

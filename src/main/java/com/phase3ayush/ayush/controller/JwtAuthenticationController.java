@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 //import com.stockexchange.phase3.JwtRequest;
 //import com.stockexchange.phase3.JwtResponse;
 
+import com.phase3ayush.ayush.dao.User1Repository;
 import com.phase3ayush.ayush.entities.User1;
 
 @RestController
@@ -35,6 +36,9 @@ public class JwtAuthenticationController {
 
 	@Autowired
 	private JwtUserDetailsService userDetailsService;
+	
+	@Autowired
+	User1Repository userRepo;
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	// without dto below public ResponseEntity<?> saveUser(@RequestBody UserDto user) throws Exception {
@@ -51,10 +55,12 @@ public class JwtAuthenticationController {
 
 		final UserDetails userDetails = userDetailsService
 				.loadUserByUsername(authenticationRequest.getUsername());
-
+		
+		final User1 user = userRepo.findByName(authenticationRequest.getUsername());
+		
 		final String token = jwtTokenUtil.generateToken(userDetails);
 
-		return ResponseEntity.ok(new JwtResponse(token));
+		return ResponseEntity.ok(new JwtResponse(token, user));
 	}
 
 	private void authenticate(String username, String password) throws Exception {
