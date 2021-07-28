@@ -10,6 +10,7 @@ import com.phase3ayush.ayush.controller.IPODetailController;
 import com.phase3ayush.ayush.controller.SectorController;
 import com.phase3ayush.ayush.controller.StockPriceController;
 import com.phase3ayush.ayush.controller.StockexchangeController;
+import com.phase3ayush.ayush.entities.Company;
 import com.phase3ayush.ayush.entities.Sector;
 
 @SpringBootApplication
@@ -24,6 +25,7 @@ public class AyushApplication {
 	    return (args) -> {
 	    	st.addCompanyDetails(new Sector("bank", "money"));
 	    	st.addCompanyDetails(new Sector("fintech", "more money"));
+//	    	cc.addCompanyDetails(new Company("hdfc", 1000, "Ayush", "Tom, Cat", "banking"));
 	    };
 	}
 
